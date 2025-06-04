@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUSAM Self-Driving</title>
+    <style>
+        /* estilos generales de la página */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #101018;
+            color: #e1bfff;
+            min-height: 100vh;
+            background: linear-gradient(rgba(10, 10, 20, 0.92), rgba(10, 10, 20, 0.92)),
+                url('/static/car.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        /* barra de navegación */
+        nav {
+            background-color: rgba(30, 0, 40, 0.92);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #7b1fa2;
+            box-shadow: 0 2px 12px #7b1fa244;
+        }
+
+        /* perfil de usuario */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #7b1fa2;
+            border: 2px solid #00eaff;
+        }
+
+        /* botón de regreso */
+        .back-button {
+            background: linear-gradient(90deg, #7b1fa2 60%, #00eaff 100%);
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 8px #00eaff55;
+            margin-right: 1rem;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(90deg, #00eaff 0%, #7b1fa2 100%);
+            transform: translateY(-2px);
+        }
+
+        /* enlaces de navegación */
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #00eaff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #7b1fa2;
+        }
+
+        /* contenedor principal */
+        .main-content {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        /* contenedor del stream */
+        .stream-container {
+            flex: 1;
+            background-color: rgba(10, 10, 20, 0.85);
+            padding: 1rem;
+            border-radius: 0;
+            border: 2px solid #7b1fa2;
+            position: relative;
+            box-shadow: 0 0 24px #7b1fa244;
+        }
+
+        .stream-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .stream-header i {
+            color: #00eaff;
+        }
+
+        /* temporizador */
+        .timer {
+            background-color: rgba(10, 10, 20, 0.92);
+            padding: 0.5rem 1rem;
+            border-radius: 0;
+            border: 1.5px solid #00eaff;
+            color: #00eaff;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* video stream */
+        #videoStream {
+            width: 100%;
+            height: 450px;
+            background: url('carretera.jpg') no-repeat center center;
+            background-size: cover;
+            border-radius: 0;
+            border: 2px solid #7b1fa2;
+            box-shadow: 0 0 16px #00eaff44;
+            position: relative;
+        }
+
+        /* panel de control */
+        .controls-container {
+            width: 400px;
+            padding: 2rem;
+            background-color: rgba(10, 10, 20, 0.85);
+            border-radius: 0;
+            border: 2px solid #7b1fa2;
+            box-shadow: 0 0 24px #7b1fa244;
+        }
+
+        .controls-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-family: 'Arial Black', sans-serif;
+            letter-spacing: 2px;
+            color: #7b1fa2;
+            text-shadow: 0 0 8px #00eaff88;
+        }
+
+        /* botones de control */
+        .control-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            justify-items: center;
+            align-items: center;
+        }
+
+        .control-button {
+            width: 60px;
+            height: 60px;
+            background-color: #181828;
+            border: 2px solid #00eaff;
+            color: #00eaff;
+            border-radius: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 8px #7b1fa244;
+        }
+
+        .control-button:hover {
+            background-color: #7b1fa2;
+            color: #fff;
+            border-color: #7b1fa2;
+        }
+
+        /* botones de acción */
+        .action-buttons {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .action-button {
+            background: linear-gradient(90deg, #7b1fa2 60%, #00eaff 100%);
+            color: #fff;
+            border: none;
+            padding: 1rem;
+            border-radius: 0;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            width: 100%;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            box-shadow: 0 0 8px #00eaff55;
+        }
+
+        .action-button:hover {
+            background: linear-gradient(90deg, #00eaff 0%, #7b1fa2 100%);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* botón de inicio de stream */
+        .start-stream {
+            background: linear-gradient(90deg, #7b1fa2 60%, #00eaff 100%);
+            color: #fff;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            width: 100%;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 8px #00eaff55;
+        }
+
+        .start-stream:hover {
+            background: linear-gradient(90deg, #00eaff 0%, #7b1fa2 100%);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- barra de navegación -->
+    <nav>
+        <div class="user-profile">
+            <img src="#" alt="Usuario">
+            <span>Mi usuario</span>
+        </div>
+        <div class="nav-links">
+            <a href="/menu">Regresar al menú</a>
+            <a href="/instrucciones">Instrucciones</a>
+            <a href="#">Galería</a>
+        </div>
+    </nav>
+
+    <!-- contenido principal -->
+    <div class="main-content">
+        <!-- contenedor del stream -->
+        <div class="stream-container">
+            <button class="start-stream" id="streamButton" onclick="toggleStream()">INICIAR STREAM</button>
+            <div style="position: relative;">
+                <img id="videoStream" src="" alt="Stream de ESP32-CAM"
+                    style="display: none; width: 100%; max-width: 640px; transform: rotate(180deg);" />
+                <div class="timer-container">
+                    <div class="timer">0:00:0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- panel de control -->
+        <div class="controls-container">
+            <h2 class="controls-title">CONTROLES</h2>
+
+            <!-- botones de dirección -->
+            <div class="control-buttons">
+                <div></div>
+                <button class="control-button" onmousedown="startCommand('w')" onmouseup="stopCommand()"
+                    ontouchstart="startCommand('w')" ontouchend="stopCommand()">↑</button>
+                <div></div>
+                <button class="control-button" onmousedown="startCommand('a')" onmouseup="stopCommand()"
+                    ontouchstart="startCommand('a')" ontouchend="stopCommand()">←</button>
+                <button class="control-button" onmousedown="startCommand('s')" onmouseup="stopCommand()"
+                    ontouchstart="startCommand('s')" ontouchend="stopCommand()">↓</button>
+                <button class="control-button" onmousedown="startCommand('d')" onmouseup="stopCommand()"
+                    ontouchstart="startCommand('d')" ontouchend="stopCommand()">→</button>
+            </div>
+
+            <!-- botones de acción -->
+            <div class="action-buttons">
+                <button class="action-button">AUTOMÁTICO</button>
+                <button class="action-button">MANUAL</button>
+                <button class="action-button">TOMAR FOTO</button>
+                <button class="action-button" id="detectionButton" onclick="toggleDetection()">IDENTIFICAR OBSTÁCULO</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // variables globales
+        let streaming = false;
+        let detecting = false;
+        let timerInterval;
+        let seconds = 0;
+        let streamId = null;
+
+        const timerElement = document.querySelector('.timer');
+        timerElement.style.display = 'none';
+
+        const COMMAND_DELAY = 100;
+        let currentCommand = null;
+        let commandInterval = null;
+
+        // eventos de mouse y touch
+        document.addEventListener('mouseup', stopCommand);
+        document.addEventListener('touchend', stopCommand);
+
+        // función para iniciar/detener el stream
+        async function toggleStream() {
+            const video = document.getElementById('videoStream');
+
+            if (!streaming) {
+                const streamName = prompt("Ingresa el nombre del stream:");
+                if (streamName === null || streamName.trim() === "") {
+                    return;
+                }
+
+                try {
+                    const response = await fetch("/start_stream", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: new URLSearchParams({
+                            titulo: streamName
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        alert("Error al iniciar el stream: " + data.detail);
+                        return;
+                    }
+
+                    streamId = data.stream_id;
+                    alert(`Tu código de acceso es: ${streamId}`);
+
+                    video.src = "/deteccion_feed";
+                    streaming = true;
+                    document.getElementById("streamButton").innerText = "DETENER STREAM";
+                    video.style.display = "block";
+                    timerElement.style.display = 'block';
+                    startTimer();
+                    enableControlButtons(true);
+                } catch (err) {
+                    console.error("Error al iniciar stream:", err);
+                    alert("Error al iniciar el stream.");
+                }
+            } else {
+                if (streamId) {
+                    try {
+                        await fetch(`/stop_stream/${streamId}`, {
+                            method: "POST"
+                        });
+                    } catch (err) {
+                        console.error("Error al detener stream:", err);
+                    }
+                    streamId = null;
+                }
+
+                video.src = "";
+                streaming = false;
+                document.getElementById("streamButton").innerText = "INICIAR STREAM";
+                video.style.display = "none";
+                stopTimer();
+                timerElement.style.display = 'none';
+                enableControlButtons(false);
+                stopCommand();
+            }
+        }
+
+        // función para activar/desactivar detección
+        function toggleDetection() {
+            detecting = !detecting;
+            const button = document.getElementById("detectionButton");
+            button.innerText = detecting ? "DETENER DETECCIÓN" : "IDENTIFICAR OBSTÁCULO";
+
+            fetch("/deteccion/toggle", {
+                method: "POST"
+            });
+        }
+
+        // función para capturar foto
+        async function capturarFoto() {
+            try {
+                const response = await fetch("/capturar_foto", {
+                    method: "POST"
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert("Foto capturada exitosamente: " + result.ruta);
+                } else {
+                    alert("Error al capturar foto: " + result.detail);
+                }
+            } catch (error) {
+                console.error("Error al capturar foto:", error);
+                alert("Error al capturar foto.");
+            }
+        }
+
+        // funciones del temporizador
+        function startTimer() {
+            seconds = 0;
+            updateTimerDisplay();
+            timerInterval = setInterval(updateTimerDisplay, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            seconds = 0;
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            timerElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            seconds++;
+        }
+
+        // funciones de control
+        function enableControlButtons(enable) {
+            const buttons = document.querySelectorAll('.control-button');
+            buttons.forEach(button => {
+                button.disabled = !enable;
+            });
+        }
+
+        function startCommand(command) {
+            if (!streaming) return;
+
+            stopCommand();
+            sendCommand(command);
+            currentCommand = command;
+            commandInterval = setInterval(() => {
+                sendCommand(command);
+            }, COMMAND_DELAY);
+        }
+
+        function stopCommand() {
+            if (commandInterval) {
+                clearInterval(commandInterval);
+                commandInterval = null;
+            }
+            if (currentCommand) {
+                currentCommand = null;
+            }
+        }
+
+        // función para enviar comandos al servidor
+        async function sendCommand(direction) {
+            try {
+                const response = await fetch(`/manejo/command/${direction}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+
+                const data = await response.json();
+                console.log('Comando enviado:', data.command);
+            } catch (error) {
+                console.error('Error al enviar comando:', error);
+            }
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUSAM Self-Driving - Recuperar Cuenta</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #101018;
+            color: #e1bfff;
+            min-height: 100vh;
+            background: linear-gradient(rgba(10, 10, 20, 0.92), rgba(10, 10, 20, 0.92)),
+                   url('/static/car.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        nav {
+            background-color: rgba(30, 0, 40, 0.92);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #7b1fa2;
+            box-shadow: 0 2px 12px #7b1fa244;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #00eaff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #7b1fa2;
+        }
+
+        .main-content {
+            padding: 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .recovery-container {
+            background-color: rgba(10, 10, 20, 0.85);
+            border: 2px solid #7b1fa2;
+            padding: 2rem;
+            border-radius: 0;
+            box-shadow: 0 0 24px #7b1fa244;
+        }
+
+        .recovery-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .recovery-header h1 {
+            font-size: 2.5rem;
+            color: #7b1fa2;
+            text-shadow: 0 0 8px #00eaff88;
+            margin-bottom: 1rem;
+        }
+
+        .recovery-header p {
+            color: #e1bfff;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #00eaff;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: rgba(20, 20, 30, 0.9);
+            border: 2px solid #7b1fa2;
+            color: #e1bfff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #00eaff;
+            box-shadow: 0 0 8px #00eaff44;
+        }
+
+        .recovery-button {
+            background: linear-gradient(90deg, #7b1fa2 60%, #00eaff 100%);
+            color: #fff;
+            border: none;
+            padding: 1rem;
+            width: 100%;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .recovery-button:hover {
+            background: linear-gradient(90deg, #00eaff 0%, #7b1fa2 100%);
+            transform: translateY(-2px);
+        }
+
+        .back-to-login {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .back-to-login a {
+            color: #00eaff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+
+        .back-to-login a:hover {
+            color: #7b1fa2;
+        }
+
+        .steps {
+            margin: 2rem 0;
+            padding: 1rem;
+            background-color: rgba(20, 20, 30, 0.9);
+            border: 1px solid #7b1fa2;
+        }
+
+        .steps h3 {
+            color: #00eaff;
+            margin-bottom: 1rem;
+        }
+
+        .steps ol {
+            color: #e1bfff;
+            padding-left: 1.5rem;
+        }
+
+        .steps li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-content">
+        <div class="recovery-container">
+            <div class="recovery-header">
+                <h1>Recuperar Cuenta</h1>
+                <p>Ingresa tu correo electrónico para recuperar tu cuenta</p>
+            </div>
+
+            <div class="steps">
+                <h3>Proceso de recuperación:</h3>
+                <ol>
+                    <li>Ingresa tu correo electrónico registrado</li>
+                    <li>Recibirás un código de verificación</li>
+                    <li>Ingresa el código en la siguiente pantalla</li>
+                    <li>Establece tu nueva contraseña</li>
+                </ol>
+            </div>
+
+            <form id="recoveryForm">
+                <div class="form-group">
+                    <label for="email">Correo Electrónico</label>
+                    <input type="email" id="email" name="email" required placeholder="ejemplo@correo.com">
+                </div>
+
+                <button type="submit" class="recovery-button">Enviar Código de Recuperación</button>
+            </form>
+
+            <div class="back-to-login">
+                <a href="/login">¿Recordaste tu contraseña? Volver al inicio de sesión</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('recoveryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            // Aquí iría la lógica para enviar el código de recuperación
+            alert('Se ha enviado un código de recuperación a tu correo electrónico');
+        });
+    </script>
+</body>
+</html> 
